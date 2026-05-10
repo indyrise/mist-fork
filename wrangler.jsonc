@@ -1,7 +1,7 @@
 
 {
 	"$schema": "node_modules/wrangler/config-schema.json",
-	"account_id": "89db26b18b6c5e3e1076facea8981e8d",
+	"account_id": "07641d92b7041b9560535ef971850215",
 	"name": "mist",
 	"compatibility_date": "2025-04-04",
 	"compatibility_flags": ["nodejs_compat"],
