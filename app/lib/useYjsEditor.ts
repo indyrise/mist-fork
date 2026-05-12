@@ -6,20 +6,16 @@ import { YjsProvider } from "./yjs-provider";
 import { USER_COLOURS } from "~/shared/constants";
 import type { UserInfo, DocMode } from "~/shared/types";
 
-function randomUserInfo(): UserInfo {
-  const idx = Math.floor(Math.random() * USER_COLOURS.length);
-  const c = USER_COLOURS[idx];
-  return {
-    name: `User ${Math.floor(Math.random() * 1000)}`,
-    color: c.color,
-    colorLight: c.light,
-  };
-}
 
-export function useYjsEditor(docId: string) {
+export function useYjsEditor(docId: string, username: string) {
   const doc = useMemo(() => new Y.Doc(), []);
   const awareness = useMemo(() => new Awareness(doc), [doc]);
-  const user = useMemo(() => randomUserInfo(), []);
+  const user = useMemo(() => ({
+    name: username,
+    color: USER_COLOURS[Math.floor(Math.random() * USER_COLOURS.length)].color,
+    colorLight: USER_COLOURS[Math.floor(Math.random() * USER_COLOURS.length)].light,
+  }), [username]);
+
   const docState = useMemo(() => doc.getMap<string>("docState"), [doc]);
   const providerRef = useRef<YjsProvider | null>(null);
   const [synced, setSynced] = useState(false);

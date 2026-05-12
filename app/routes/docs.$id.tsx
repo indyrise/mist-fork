@@ -1,3 +1,6 @@
+import { UsernameModal } from "~/components/UsernameModal";
+import { useState, useEffect } from "react";
+
 import { data, Link } from "react-router";
 import type { Route } from "./+types/docs.$id";
 import { getAgentByName } from "agents";
@@ -56,7 +59,28 @@ function formatRemainingTime(createdAt: number): string {
 
 export default function DocumentPage({ loaderData }: Route.ComponentProps) {
   const { id, createdAt } = loaderData;
-  const yjs = useYjsEditor(id);
+  const [usernameSet, setUsernameSet] = useState(false);
+  const [username, setUsername] = useState<string | null>(null);
+
+  // Always call this hook
+  const yjs = useYjsEditor(id, username || "");
+
+  useEffect(() => {
+    const storedUsername = localStorage.getItem("mist-username");
+    if (storedUsername) {
+      setUsername(storedUsername);
+      setUsernameSet(true);
+    }
+  }, []);
+
+  const handleUsernameSubmit = (name: string) => {
+    setUsername(name);
+    setUsernameSet(true);
+  };
+
+  if (!usernameSet || !username) {
+    return <UsernameModal onSubmit={handleUsernameSubmit} />;
+  }
 
   return (
     <DocumentProvider docId={id} createdAt={createdAt} yjs={yjs}>
